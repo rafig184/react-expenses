@@ -7,7 +7,7 @@ export default function Controls(props: {
   isAddReportsVisible: boolean;
   changeReportsVisibility: Function;
   changeExpenseVisibility: Function;
-  options: Array<{ code: string; name: string }> | any;
+  yearsOption: Array<{ code: string; name: string }> | any;
   categoryOptions: Array<{ category: string; }> | any;
   setYearHandler: Function;
   selectedYear: any;
@@ -39,7 +39,7 @@ export default function Controls(props: {
             props.setYearHandler(e.value);
             console.log(selectedYear);
           }}
-          options={props.options}
+          options={props.yearsOption}
           optionLabel="name"
           placeholder="Select a Year"
           filter

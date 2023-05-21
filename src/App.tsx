@@ -15,16 +15,18 @@ function App() {
     name: string;
     code: string;
   } | null>(null);
+
+  const [selectedCategory, setSelectedCategory] = useState<{
+    name: string;
+    code: string;
+  } | null>(null)
+
   const formHandler = (expenseVisibility: boolean) => {
     setIsExpenseVisible(expenseVisibility);
   };
   const reportsHandler = (expenseVisibility: boolean) => {
     setIsReportsVisible(expenseVisibility);
   };
-  const [selectedCategory, setSelectedCategory] = useState<{
-    name: string;
-    code: string;
-  } | null>(null)
 
   const allYears = expenses
     .map((e) => {
@@ -37,9 +39,9 @@ function App() {
     }, {});
 
   console.log(expenses);
+
   const allCategories = expenses.map((c) => {
     const category = c.category.toString();
-
     return { code: category, name: category }
   })
     .reduce((categoryObj: any, currentCategory) => {
@@ -47,28 +49,34 @@ function App() {
       return categoryObj;
     }, {})
 
-  // const filteredExpenses =
-  //   !selectedYear || selectedYear?.code === "all"
-  //     ? expenses
-  //     : expenses.filter((e) => {
-  //       return e.date.getFullYear().toString() === selectedYear?.code;
-  //     });
-
   const filteredExpenses =
-    (!selectedYear && !selectedCategory || selectedCategory?.code === "all" &&
-      selectedYear?.code === "all" || selectedCategory?.code === "all" &&
-      !selectedYear?.code || selectedYear?.code === "all" && !selectedCategory?.code)
+    !selectedYear || selectedYear?.code === "all"
       ? expenses
-      : expenses.filter((c) => {
-        if (!selectedYear?.code || selectedYear?.code === "all")
-          return c.category === selectedCategory?.code
-        else {
-          if (!selectedCategory?.code || selectedCategory?.code === "all") {
-            return c.date.getFullYear().toString() === selectedYear?.code
-          }
-          return c.category === selectedCategory?.code && c.date.getFullYear().toString() === selectedYear?.code
-        }
-      })
+      : expenses.filter((e) => {
+        return e.date.getFullYear().toString() === selectedYear?.code;
+      });
+  const filteredExpensesCat =
+    !selectedCategory || selectedCategory?.code === "all"
+      ? filteredExpenses
+      : filteredExpenses.filter((e) => {
+        return e.category === selectedCategory?.code
+      });
+
+  // const filteredExpenses =
+  //   (!selectedYear && !selectedCategory || selectedCategory?.code === "all" &&
+  //     selectedYear?.code === "all" || selectedCategory?.code === "all" &&
+  //     !selectedYear?.code || selectedYear?.code === "all" && !selectedCategory?.code)
+  //     ? expenses
+  //     : expenses.filter((c) => {
+  //       if (!selectedYear?.code || selectedYear?.code === "all")
+  //         return c.category === selectedCategory?.code
+  //       else {
+  //         if (!selectedCategory?.code || selectedCategory?.code === "all") {
+  //           return c.date.getFullYear().toString() === selectedYear?.code
+  //         }
+  //         return c.category === selectedCategory?.code && c.date.getFullYear().toString() === selectedYear?.code
+  //       }
+  //     })
 
 
   return (
@@ -79,7 +87,7 @@ function App() {
       {isAddExpenseVisible ? (
         <AddExpense
           onSave={(expense: any) => {
-            setExpenses([...expenses, expense]);
+            setExpenses([...expenses, expense])
           }}
         />
       ) : null}
@@ -88,8 +96,7 @@ function App() {
       ) : null}
 
       <ExpensesList
-        expenses={filteredExpenses}
-
+        expenses={filteredExpensesCat}
       />
     </div>
   );
@@ -100,7 +107,7 @@ function App() {
       changeReportsVisibility: reportsHandler,
       isAddExpenseVisible: isAddExpenseVisible,
       isAddReportsVisible: isAddReportsVisible,
-      options: [{ code: "all", name: "All" }, ...Object.values(allYears)],
+      yearsOption: [{ code: "all", name: "All" }, ...Object.values(allYears)],
       categoryOptions: [{ code: "all", name: "All" }, ...Object.values(allCategories)],
       setYearHandler: setSelectedYear,
       selectedYear,

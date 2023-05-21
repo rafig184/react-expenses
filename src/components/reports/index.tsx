@@ -10,14 +10,14 @@ export default function Reports(props: { categoryOptions: Array<{ category: stri
 
   const dataCategory = expenses.reduce((expensesObj: any, currentExpense: any) => {
     const category = currentExpense.category;
-    const counter = 0;
-    const expensesCounter = counter + 1;
+    const counter = currentExpense.amount;
+    // const expensesCounter = counter + 1;
 
 
     if (expensesObj[category]) {
-      expensesObj[category] = expensesObj[category] + expensesCounter;
+      expensesObj[category] = expensesObj[category] + counter;
     } else {
-      expensesObj[category] = expensesCounter;
+      expensesObj[category] = counter;
     }
     return expensesObj;
   }, {});
@@ -33,14 +33,14 @@ export default function Reports(props: { categoryOptions: Array<{ category: stri
         {
           data: datas,
           backgroundColor: [
-            documentStyle.getPropertyValue('--blue-500'),
+            documentStyle.getPropertyValue('--blue-700'),
             documentStyle.getPropertyValue('--yellow-500'),
             documentStyle.getPropertyValue('--green-500'),
             documentStyle.getPropertyValue('--red-500'),
             documentStyle.getPropertyValue('--purple-500'),
             documentStyle.getPropertyValue('--cyan-500'),
             documentStyle.getPropertyValue('--pink-500'),
-            documentStyle.getPropertyValue('--orange-500'),
+            documentStyle.getPropertyValue('--orange-600'),
           ],
           hoverBackgroundColor: [
             documentStyle.getPropertyValue('--blue-400'),
